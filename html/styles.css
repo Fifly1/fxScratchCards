@@ -112,3 +112,30 @@ body,html {
     height: 20%;
     z-index: 99;
   }
+
+  @media screen and (min-width: 1px) {
+    .logoText-container {
+      font-size: 125%;
+  }
+  .close-button::before {
+    font-size: 250%;
+  }
+}
+
+@media screen and (min-width: 1919px) {
+  .logoText-container {
+    font-size: 175%;
+}
+.close-button::before {
+  font-size: 300%;
+}
+}
+
+@media screen and (min-width: 1921px) {
+  .logoText-container {
+    font-size: 240%;
+}
+.close-button::before {
+  font-size: 350%;
+}
+}
