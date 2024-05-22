@@ -4,7 +4,7 @@
 
 Free esx/qb scratch cards script for FiveM.
 
-|Preview| [Preview]()
+|Preview| [Preview](https://youtu.be/d85DpvlZIe8)
 
 If you are using QBCORE add this in your qb-core/shared/items.lua:
 
