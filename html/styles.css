@@ -1,0 +1,114 @@
+* {
+    font-family: "Bahnschrift";
+    user-select: none;
+}
+
+body,html {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.scratchcard {
+    width: 30%;
+    height: 80%;
+    border-radius: 3%;
+    background-color: rgba(30,30,30,0.95);
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    flex-direction: column;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.scratchcard.visible {
+  opacity: 1;
+}
+
+.header-container {
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    width: 100%;
+}
+
+.fx-logo {
+    width: 20%;
+    margin: 2%;
+}
+
+.logoText-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    font-size: 175%;
+    white-space: nowrap;
+}
+
+.main-container {
+    width: 80%;
+    height: 76%;
+    background-color: rgba(30,30,30,0.30);
+    border-radius: 3%;
+    border: 3px solid #6c25be;
+    display: grid;
+    grid-template-rows: repeat(3, 33%);
+    grid-template-columns: repeat(2, 50%);
+}
+
+.scratch {
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+}
+
+.under-scratch {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.price {
+    position: fixed;
+    color: white;
+    z-index: 0;
+}
+
+.close-button::before {
+    position: fixed;
+    right: 35.4%;
+    font-family: "Font Awesome 6 Free";
+    content: "\f00d";
+    color: red;
+    font-size: 300%;
+  }
+
+  #scratch1 {
+    border-radius: 7% 0 0 0;
+  }
+  #scratch2 {
+    border-radius: 0 7% 0 0;
+  }
+  #scratch5 {
+    border-radius: 0 0 0 7%;
+  }
+  #scratch6 {
+    border-radius: 0 0 7% 0;
+  }
+
+  .dollar-sign {
+    position: fixed;
+    width: 15%;
+    height: 20%;
+    z-index: 99;
+  }
