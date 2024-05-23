@@ -29,6 +29,6 @@ AddEventHandler('fx_scratchcard:server:AddMoney', function(price)
         Player.Functions.AddMoney("cash", price)
     else
         local xPlayer = ESX.GetPlayerFromId(src)
-        xPlayer.addAccountMoney('bank', price)
+        xPlayer.addAccountMoney('money', price)
     end
 end)
