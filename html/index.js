@@ -1,5 +1,6 @@
 window.addEventListener('message', function(event) {
     if (event.data.action == "openScratchCard") {
+        const token = event.data.token;
         const scratchCardsContainer = document.createElement("div");
         scratchCardsContainer.classList.add("scratchcard");
 
@@ -118,7 +119,7 @@ window.addEventListener('message', function(event) {
                     moneyGiven = true;
                     const price = prices[index];
                     if (price !== "") {
-                        $.post('https://fx_scratchcards/giveMoney', JSON.stringify({ price: price }));
+                        $.post('https://fx_scratchcards/giveMoney', JSON.stringify({ price: price, token: token }));
                     }
                 }
             };
