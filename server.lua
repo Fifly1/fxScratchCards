@@ -1,6 +1,6 @@
 local QBCore = nil
 local ESX = nil
-local activeTokens = {}
+local activePrizes = {}
 
 if Config.framework == "qbcore" then
     QBCore = exports["qb-core"]:GetCoreObject()
@@ -9,9 +9,19 @@ if Config.framework == "qbcore" then
         local src = source
         local Player = QBCore.Functions.GetPlayer(src)
         Player.Functions.RemoveItem(item.name, 1, item.slot)
-        local token = math.random(100000, 999999)
-        activeTokens[src] = token
-        TriggerClientEvent("fx_scratchcards:client:Open", src, token)
+        
+        local prizes = {}
+        for i = 1, 6 do
+            if math.random() < Config.tryAgainPercentage then
+                table.insert(prizes, "")
+            else
+                table.insert(prizes, math.floor(math.random(Config.minPrice, Config.maxPrice)))
+            end
+        end
+        
+        activePrizes[src] = { prizes = prizes, claimed = {false, false, false, false, false, false} }
+        
+        TriggerClientEvent("fx_scratchcards:client:Open", src, prizes)
     end)
 else
     ESX = exports["es_extended"]:getSharedObject()
@@ -19,34 +29,41 @@ else
     ESX.RegisterUsableItem('fx_scratchcard', function(source)
         local xPlayer = ESX.GetPlayerFromId(source)
         xPlayer.removeInventoryItem('fx_scratchcard', 1)
-        local token = math.random(100000, 999999)
-        activeTokens[source] = token
-        TriggerClientEvent("fx_scratchcards:client:Open", source, token)
+        
+        local prizes = {}
+        for i = 1, 6 do
+            if math.random() < Config.tryAgainPercentage then
+                table.insert(prizes, "")
+            else
+                table.insert(prizes, math.floor(math.random(Config.minPrice, Config.maxPrice)))
+            end
+        end
+        
+        activePrizes[source] = { prizes = prizes, claimed = {false, false, false, false, false, false} }
+        
+        TriggerClientEvent("fx_scratchcards:client:Open", source, prizes)
     end)
 end
 
 RegisterServerEvent('fx_scratchcard:server:AddMoney')
-AddEventHandler('fx_scratchcard:server:AddMoney', function(token, price)
+AddEventHandler('fx_scratchcard:server:AddMoney', function(slotIndex)
     local src = source
-    if activeTokens[src] and activeTokens[src] == token then
-        if Config.framework == "qbcore" then
-            local Player = QBCore.Functions.GetPlayer(src)
-            if Player and price >= Config.minPrice and price <= Config.maxPrice then
-                Player.Functions.AddMoney("cash", price)
+    local prizeData = activePrizes[src]
+    if prizeData and prizeData.claimed[slotIndex + 1] == false then
+        local prize = prizeData.prizes[slotIndex + 1]
+        if prize ~= "" and prize >= Config.minPrice and prize <= Config.maxPrice then
+            if Config.framework == "qbcore" then
+                local Player = QBCore.Functions.GetPlayer(src)
+                if Player then
+                    Player.Functions.AddMoney("cash", prize)
+                end
+            else
+                local xPlayer = ESX.GetPlayerFromId(src)
+                if xPlayer then
+                    xPlayer.addAccountMoney('money', prize)
+                end
             end
-        else
-            local xPlayer = ESX.GetPlayerFromId(src)
-            if xPlayer and price >= Config.minPrice and price <= Config.maxPrice then
-                xPlayer.addAccountMoney('money', price)
-            end
+            prizeData.claimed[slotIndex + 1] = true
         end
     end
 end)
-
-RegisterServerEvent('fx_scratchcard:server:Closed')
-AddEventHandler('fx_scratchcard:server:Closed', function()
-    local src = source
-    activeTokens[src] = nil
-end)
-
-
