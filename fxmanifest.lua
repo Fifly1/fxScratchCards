@@ -4,7 +4,7 @@ lua54 'yes'
 
 author 'fx'
 description 'fxScratchCards'
-version '1.1'
+version '1.2'
 
 ui_page 'html/index.html'
 
