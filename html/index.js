@@ -1,6 +1,5 @@
 window.addEventListener('message', function(event) {
     if (event.data.action == "openScratchCard") {
-        const token = event.data.token;
         const scratchCardsContainer = document.createElement("div");
         scratchCardsContainer.classList.add("scratchcard");
 
@@ -29,9 +28,7 @@ window.addEventListener('message', function(event) {
         const mainContainer = document.createElement("div");
         mainContainer.classList.add("main-container");
 
-        const prices = Array.from({ length: 6 }, () => {
-            return Math.random() < event.data.tryAgainPercentage ? "" : Math.floor(Math.random() * (event.data.maxPrice - event.data.minPrice + 1)) + event.data.minPrice;
-        });
+        const prices = event.data.prizes;
 
         prices.forEach((price, index) => {
             const underScratch = document.createElement("div");
@@ -119,7 +116,7 @@ window.addEventListener('message', function(event) {
                     moneyGiven = true;
                     const price = prices[index];
                     if (price !== "") {
-                        $.post('https://fx_scratchcards/giveMoney', JSON.stringify({ price: price, token: token }));
+                        $.post(`https://${event.data.resourceName}/giveMoney`, JSON.stringify({ slotIndex: index }));
                     }
                 }
             };
@@ -138,7 +135,7 @@ window.addEventListener('message', function(event) {
             scratchCardsContainer.classList.remove('visible');
             setTimeout(() => {
                 document.body.innerHTML = '';
-                $.post('https://fx_scratchcards/exit', JSON.stringify({}));
+                $.post(`https://${event.data.resourceName}/exit`, JSON.stringify({}));
             }, 300); 
         });
     }
